@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/id_home"
+        android:title="@string/txt_home"
+        android:icon="@drawable/ic_home"/>
+
+    <item android:id="@+id/id_person"
+        android:title="@string/txt_person"
+        android:icon="@drawable/ic_person"/>
+
+    <item android:id="@+id/id_location"
+        android:title="@string/txt_location"
+        android:icon="@drawable/ic_location"/>
+</menu>
