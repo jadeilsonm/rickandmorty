@@ -1,34 +1,27 @@
 package com.example.rickandmorty
 
+import CharactersScreen
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.example.rickandmorty.databinding.ActivityMainBinding
-import com.example.rickandmorty.fragment.HomeFragment
-import com.example.rickandmorty.fragment.LocationFragment
-import com.example.rickandmorty.fragment.PersonFragment
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
+import com.example.rickandmorty.ui.theme.RickAndMortyTheme
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        replaceFragment(HomeFragment())
-
-        binding.bottomNav.setOnItemSelectedListener {
-                item -> when (item.itemId) {
-            R.id.id_home -> replaceFragment(HomeFragment())
-            R.id.id_person -> replaceFragment(PersonFragment())
-            R.id.id_location -> replaceFragment(LocationFragment())
+        setContent {
+            RickAndMortyTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    CharactersScreen()
+                }
+            }
         }
-            true
-        }
-    }
-    private fun replaceFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
     }
 }
