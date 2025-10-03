@@ -1,6 +1,6 @@
 package com.example.rickandmorty
 
-import CharactersScreen
+import com.example.rickandmorty.ui.home.components.CharactersScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
             RickAndMortyTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.onSurface
                 ) {
                     CharactersScreen()
                 }
