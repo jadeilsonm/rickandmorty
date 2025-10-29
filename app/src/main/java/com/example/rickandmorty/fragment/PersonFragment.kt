@@ -5,14 +5,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.rickandmorty.databinding.FragmentPersonBinding
+import com.example.rickandmorty.utils.UiState
+import com.example.rickandmorty.viewmodel.CharacterViewModel
+import com.squareup.picasso.Picasso
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+import kotlinx.coroutines.launch
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class PersonFragment : Fragment() {
+    private val _viewModel: CharacterViewModel by viewModels()
     private var _binding: FragmentPersonBinding? = null
     private val binding get() = _binding!!
     private var param1: String? = null
@@ -36,7 +44,37 @@ class PersonFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtPerson.text = "Novo texto inserido no ciclo de vida \ndo fragment Person"
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                _viewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is UiState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                        }
+                        is UiState.Success -> {
+                            val person = uiState.data.find { x -> x.id == 1 }
+                            binding.progressBar.visibility = View.GONE
+                            binding.imageViewPerson.visibility = View.VISIBLE
+                            val imgUrl = person?.image
+                            Picasso
+                                .get()
+                                .load(imgUrl)
+                                .into(binding.imageViewPerson)
+                            binding.textViewError.visibility = View.GONE
+                            binding.textViewName.text = person?.name
+                            binding.textViewDescription.text = "Status: ${person?.status}, Especie: ${person?.species} e Gender: ${person?.gender}"
+                        }
+                        is UiState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            binding.textViewError.visibility = View.VISIBLE
+                            binding.textViewError.text = uiState.message
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -45,8 +83,6 @@ class PersonFragment : Fragment() {
     }
 
     companion object {
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             PersonFragment().apply {

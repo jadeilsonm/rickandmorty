@@ -2,33 +2,22 @@ package com.example.rickandmorty
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.rickandmorty.databinding.ActivityMainBinding
-import com.example.rickandmorty.fragment.HomeFragment
-import com.example.rickandmorty.fragment.LocationFragment
-import com.example.rickandmorty.fragment.PersonFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(HomeFragment())
-
-        binding.bottomNav.setOnItemSelectedListener {
-                item -> when (item.itemId) {
-            R.id.id_home -> replaceFragment(HomeFragment())
-            R.id.id_person -> replaceFragment(PersonFragment())
-            R.id.id_location -> replaceFragment(LocationFragment())
-        }
-            true
-        }
-    }
-    private fun replaceFragment(fragment: Fragment){
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+        val navHost = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navHost.navController
+        binding.bottomNav.setupWithNavController(navController)
     }
 }

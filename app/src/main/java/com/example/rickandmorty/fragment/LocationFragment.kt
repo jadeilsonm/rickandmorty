@@ -34,7 +34,7 @@ class LocationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtLocation.text = "Novo texto inserido no ciclo de vida \ndo fragment Location"
+        binding.txtLocation.text = "Fragment Location"
     }
 
     override fun onDestroyView() {

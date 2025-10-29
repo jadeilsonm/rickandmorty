@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.txtHome.text = "Novo texto inserido no ciclo de vida \ndo fragment Home"
+        binding.txtHome.text = "Home fragment"
     }
 
     override fun onDestroyView() {
